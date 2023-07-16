@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './EventForm.css';
-import EventList from './EventList';
-import { addEvent, updateEvent, deleteEvent } from './redux/action';
-const EventForm = () => {
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import "./EventForm.css";
+import { addEvent } from "./redux/action";
 
-    const dispatch = useDispatch();
+const EventForm = () => {
+  const dispatch = useDispatch();
   const initialEvent = {
     eventName: "",
     eventType: "sports",
@@ -18,42 +17,45 @@ const EventForm = () => {
   };
 
   const [data, setData] = useState(initialEvent);
-  const [editMode, setEditMode] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const eventsList = useSelector((state) => state.events.eventsList);
-
-  console.log(eventsList, editMode, "aaa");
-  
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (editMode && editIndex !== null) {
-      dispatch(updateEvent(editIndex, data));
-    } else {
-      dispatch(addEvent(data));
+
+    // Basic validation checks
+    if (!data.eventName.trim()) {
+      alert("Event Name is required.");
+      return;
     }
+
+    if (!data.eventStartDate) {
+      alert("Event Start Date is required.");
+      return;
+    }
+
+    if (!data.eventEndDate) {
+      alert("Event End Date is required.");
+      return;
+    }
+
+    const startDate = new Date(data.eventStartDate);
+    const endDate = new Date(data.eventEndDate);
+
+    if (startDate > endDate) {
+      alert("Event Start Date cannot be after Event End Date.");
+      return;
+    }
+    dispatch(addEvent(data));
     setData(initialEvent);
-    setEditMode(false);
-    setEditIndex(null);
   };
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSubmit(event);
     }
   };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
-  };
-  const handleDeleteEvent = (index) => {
-    dispatch(deleteEvent(index));
-  };
-
-  const handleEditEvent = (index) => {
-    const eventToEdit = eventsList[index];
-    setData(eventToEdit);
-    setEditIndex(index); // Save the index of the edited event
-    setEditMode(true);
   };
 
   return (
@@ -136,16 +138,10 @@ const EventForm = () => {
           />
         </div>
         <div>
-          <button type="submit">
-            {editMode ? "Update Event" : "Save Event"}
-          </button>
+          <button type="submit">Save Event</button>
         </div>
       </form>
-      <EventList
-        eventsList={eventsList}
-        onDeleteEvent={handleDeleteEvent}
-        onEditEvent={handleEditEvent}
-      />
+      <div style={{ display: "none" }}></div>
     </div>
   );
 };

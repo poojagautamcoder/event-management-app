@@ -1,0 +1,33 @@
+/* Navbar.css */
+
+.navbar {
+    background-color: #F06292; /* Bright pink background */
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  .navbar-list li {
+    margin: 0 10px;
+  }
+  
+  .navbar-link {
+    color: #FFFFFF; /* White text color */
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .navbar-link:hover {
+    background-color: #FF80AB; /* Lighter pink on hover */
+  }
+  

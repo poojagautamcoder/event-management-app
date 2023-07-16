@@ -9,13 +9,13 @@ const initialState = {
           ...state,
           eventsList: [...state.eventsList, action.payload],
         };
-      case 'UPDATE_EVENT':
-        const updatedEventsList = [...state.eventsList];
-        updatedEventsList[action.payload.index] = action.payload.data;
-        return {
-          ...state,
-          eventsList: updatedEventsList,
-        };
+        case 'UPDATE_EVENT':
+            const updatedEventsList = [...state.eventsList];
+            updatedEventsList[action.payload.index] = action.payload.data;
+            return {
+              ...state,
+              eventsList: updatedEventsList,
+            };
       case 'DELETE_EVENT':
         return {
           ...state,

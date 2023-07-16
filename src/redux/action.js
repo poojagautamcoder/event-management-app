@@ -4,10 +4,15 @@ export const addEvent = (data) => ({
     payload: data,
   });
   
-  export const updateEvent = (index, data) => ({
-    type: 'UPDATE_EVENT',
-    payload: { index, data },
-  });
+  export const updateEvent = (index, eventData) => {
+    return {
+      type: 'UPDATE_EVENT',
+      payload: {
+        index,
+        data: eventData,
+      },
+    };
+  };
   
   export const deleteEvent = (index) => ({
     type: 'DELETE_EVENT',
