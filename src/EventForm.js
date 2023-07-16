@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import "./EventForm.css";
-import EventList from "./EventList";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './EventForm.css';
+import EventList from './EventList';
+import { addEvent, updateEvent, deleteEvent } from './redux/action';
 const EventForm = () => {
+
+    const dispatch = useDispatch();
   const initialEvent = {
     eventName: "",
     eventType: "sports",
@@ -14,29 +18,23 @@ const EventForm = () => {
   };
 
   const [data, setData] = useState(initialEvent);
-  const [eventsList, setEventsList] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const eventsList = useSelector((state) => state.events.eventsList);
 
   console.log(eventsList, editMode, "aaa");
   
 
   const handleSubmit = (event) => {
-
-
     event.preventDefault();
     if (editMode && editIndex !== null) {
-      // If in edit mode, update the event in 'eventsList'
-      const updatedEventsList = [...eventsList];
-      updatedEventsList[editIndex] = data;
-      setEventsList(updatedEventsList);
+      dispatch(updateEvent(editIndex, data));
     } else {
-      // If not in edit mode, add the current 'data' to 'eventsList'
-      setEventsList([...eventsList, data]);
+      dispatch(addEvent(data));
     }
-    setData(initialEvent); // Reset the form data
-    setEditMode(false); // Reset edit mode after saving or updating
-    setEditIndex(null); // Reset the editIndex after saving or updating
+    setData(initialEvent);
+    setEditMode(false);
+    setEditIndex(null);
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -48,9 +46,7 @@ const EventForm = () => {
     setData({ ...data, [name]: value });
   };
   const handleDeleteEvent = (index) => {
-    const updatedEventsList = [...eventsList];
-    updatedEventsList.splice(index, 1);
-    setEventsList(updatedEventsList);
+    dispatch(deleteEvent(index));
   };
 
   const handleEditEvent = (index) => {
